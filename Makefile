@@ -21,6 +21,24 @@ all:
 	git status
 	echo Ok there you go!
 	#INFO: no_ebin_commit ENDED SUCCESSFUL
+arm:
+	rm -rf erl_cra* rebar3_crashreport;
+	rm -rf *~ */*~;
+	rm -rf test_ebin;
+	rm -rf *.beam */*.beam;
+	rm -rf test.rebar;
+	rm -rf logs;
+	rm -rf Mnesia.*;
+	rm -rf _build;
+	rm -rf ebin;
+	rebar3 release;
+	rebar3 as prod tar;
+	rm -rf tar_dir;
+	mkdir tar_dir;
+	cp _build/prod/rel/add_test/*.tar.gz tar_dir/add_test.tar.gz;
+	rm -rf _build;
+	git status
+	echo Ok there you go!
 clean:
 	rm -rf erl_cra* rebar3_crashreport;
 	rm -rf *~ */*~;
