@@ -10,9 +10,14 @@ all:
 	rm -rf ebin;
 	rm -rf rebar.lock;
 	#INFO: Compile application
-	rebar3 compile;
+	rm -rf common_include;
+	cp -r ~/erlang/common_include .
+	rebar3 release;
+	rebar3 as prod tar;
+	rm -rf tar_dir;
+	mkdir tar_dir;
+	cp _build/prod/rel/add_test/*.tar.gz tar_dir/add_test.tar.gz;
 	rm -rf _build;
-	rm -rf rebar.lock
 	git status
 	echo Ok there you go!
 	#INFO: no_ebin_commit ENDED SUCCESSFUL
@@ -28,6 +33,8 @@ clean:
 	rm -rf ebin;
 	rm -rf rebar.lock;
 	#INFO: Compile application
+	rm -rf common_include;
+	cp -r ~/erlang/common_include .
 	cp config/rebar.config .;
 	rebar3 compile;
 	rm -rf _build;
@@ -45,11 +52,17 @@ eunit:
 	rm -rf ebin;
 	rm -rf rebar.lock;
 #INFO: Creating eunit test code using test_ebin dir;
+	rm -rf common_include;
+	cp -r ~/erlang/common_include .
 	mkdir test_ebin;
 	cp test_config/test.rebar.config rebar.config;
 	erlc -o test_ebin test/*.erl;
 	cp test/*.app test_ebin;
-	rebar3 compile
+	rebar3 release;
+	rebar3 as prod tar;
+	rm -rf tar_dir;
+	mkdir tar_dir;
+	cp _build/prod/rel/add_test/*.tar.gz tar_dir/add_test.tar.gz;
 	#INFO: Starts the eunit testing .................
 	erl -pa test_ebin\
 	 -pa _build/default/lib/log/ebin\
