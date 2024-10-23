@@ -31,6 +31,7 @@ arm:
 	rm -rf Mnesia.*;
 	rm -rf _build;
 	rm -rf ebin;
+	rm -rf rebar.lock;
 	rebar3 release;
 	rebar3 as prod tar;
 	rm -rf tar_dir;
